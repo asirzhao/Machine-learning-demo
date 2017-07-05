@@ -28,8 +28,29 @@ def liner_classify_func(w, b, x):
 class SupportVectorMachineClassify:
     """
     Class of Support Vector Machine
+        SVM is a classic machine learning algorithm, liner and RBF kernel are provided in this demo. This demo is total
+     based on SMO algorithm, which is a good method to solve QP problem.
+        See more information about SVM and SMO:
+        1.https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-98-14.pdf
+        2.http://cs229.stanford.edu/notes/cs229-notes3.pdf
+        3.http://cs229.stanford.edu/materials/smo.pdf
+        4.https://en.wikipedia.org/wiki/Support_vector_machine
     """
     def __init__(self, x_array, y_array):
+        """
+        _penalty: penalty parameter C
+        _delta: parameter of delta in Gaussian kernel
+        m: length of x_array
+        kernel_unit: kernel unit value
+        kernel_matrix: kernel matrix
+        bias: bias of SVM
+        tol: tolerance parameter to determine continue or break the loop
+        max_passes: times of alpha without changing in iterator
+        l_value: L value of SMO
+        h_value: H value of SMO
+        k_type: kernel type
+        step: threshold parameter of alpha in two iterators
+        """
         self.x_arr = x_array
         self.y_arr = y_array
         self._penalty = 200
@@ -37,7 +58,6 @@ class SupportVectorMachineClassify:
         self.m = x_array.shape[1]
         self.kernel_unit = 0
         self.kernel_matrix = np.zeros((self.m, self.m))
-        # self.alpha = np.random.random_sample((1, self.m))*self._penalty
         self.alpha = np.zeros((1, self.m))
         self.bias = 0
         self.tol = 0.001
@@ -53,6 +73,10 @@ class SupportVectorMachineClassify:
         return f_weight, f_bias
 
     def get_support_vector(self):
+        """
+        Get support vector
+        :return:
+        """
         alpha = self.alpha
         sub_0 = np.where(alpha > 0)
         sub_p = np.where(alpha < self._penalty)
@@ -175,7 +199,7 @@ class SupportVectorMachineClassify:
         return error
 
 if __name__ == '__main__':
-    data = np.genfromtxt("C:/Users/zhaoyao/Desktop/data/svm.csv", delimiter=',')
+    data = np.genfromtxt("./svm.csv", delimiter=',')
     data_new = z_score_nor_fuc(data[:, :-1])
     data[:, :-1] = data_new
 
@@ -190,7 +214,11 @@ if __name__ == '__main__':
     weight, bias = svm.support_vector_machine()
     print(svm.alpha)
     support_vector = svm.get_support_vector()
+    
     plt.plot([-1, 1], [liner_classify_func(weight, bias, -1), liner_classify_func(weight, bias, 1)], color='green')
-    plt.scatter(support_vector.T[:, 0], support_vector.T[:, 1], color='green')
+    plt.scatter(support_vector.T[:, 0], support_vector.T[:, 1], color='green') #lighten up support vector
+    plt.xlabel("x1")
+    plt.ylabel("y2")
+    plt.title("SVM result")
     plt.show()
 
