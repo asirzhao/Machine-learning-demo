@@ -34,7 +34,7 @@ def min_max_nor_fuc(x):
     max = np.max(x, axis=0)
     return (x - min)/(max - min)
 
-data = np.genfromtxt("C:/Users/zhaoyao/Desktop/data/logistic_regression_2.txt", delimiter=',')
+data = np.genfromtxt("./logistic_regression_2.txt", delimiter=',')
 data_new = z_score_nor_fuc(data[:, :-1])
 data_training = np.empty(data.shape)
 data_training[:, :-1] = data_new[:, :]
@@ -55,6 +55,11 @@ plt.scatter(train_negative[:, 0], train_negative[:, 1], color='b')
 class LogisticRegression:
     """
     Logistic regression
+        Mini-batch gradient descent and Newton's method are provided to optimze the log cost function. The result
+      presents that Newton's method converge much faster than gradient descent.
+        See more information about Newton'method and convex function optimzation:
+	1.https://en.wikipedia.org/wiki/Newton%27s_method
+	2.tps://see.stanford.edu/materials/lsocoee364a/03ConvexFunctions.pdf
     """
     def __init__(self, feature_train, label_train, feature_test, label_test):
         """
@@ -175,8 +180,16 @@ if __name__ == '__main__':
     print(gradient)
     print(theta)
     plt.plot([-2, 2], [regression_fuc(theta, -2), regression_fuc(theta, 2)], color='green')
+    plt.xlabel("x1")
+    plt.ylabel("x2")
+    plt.title("Logistic regression result")
+
     plt.subplot(122)
     plt.plot(loss)
+    plt.xlabel("iterators")
+    plt.ylabel("loss value")
+    plt.title("Logistic cost function loss")
+
     plt.show()
 
 
