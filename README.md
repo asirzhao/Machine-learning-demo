@@ -6,4 +6,4 @@ Machine learning demo for multiple algorithm
 3. We only provide some simple datasets to test the demos. Trying the demos on any other dataset may cost you some time to tune the parameters for specifc dataset.
 4. If you have any question, send mail to joeAsir0560@outlook.com.
 
-Have fun! :-)
+Have fun!  :-)
