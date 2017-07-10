@@ -214,7 +214,8 @@ if __name__ == '__main__':
     weight, bias = svm.support_vector_machine()
     print(svm.alpha)
     support_vector = svm.get_support_vector()
-    
+   
+    # print the classify hyperplane only when the type is liner(Actually,I have no idea how to print hyperplane when the param is rbf krenel)
     # plt.plot([-1, 1], [liner_classify_func(weight, bias, -1), liner_classify_func(weight, bias, 1)], color='green')
     plt.scatter(support_vector.T[:, 0], support_vector.T[:, 1], color='green') #lighten up support vector
     plt.xlabel("x1")
