@@ -64,8 +64,8 @@ class SupportVectorMachineClassify:
         self.max_passes = 25
         self.l_value = 0
         self.h_value = 0
-        self.k_type = "liner"
-        self.step = 0.0001
+        self.k_type = "rbf"
+        self.step = 0.001
 
     def support_vector_machine(self):
         f_alpha, f_bias = self.sequential_min_opt()
@@ -199,7 +199,7 @@ class SupportVectorMachineClassify:
         return error
 
 if __name__ == '__main__':
-    data = np.genfromtxt("./svm.csv", delimiter=',')
+    data = np.genfromtxt("./svm_rbf.csv", delimiter=',')
     data_new = z_score_nor_fuc(data[:, :-1])
     data[:, :-1] = data_new
 
@@ -215,7 +215,7 @@ if __name__ == '__main__':
     print(svm.alpha)
     support_vector = svm.get_support_vector()
     
-    plt.plot([-1, 1], [liner_classify_func(weight, bias, -1), liner_classify_func(weight, bias, 1)], color='green')
+    # plt.plot([-1, 1], [liner_classify_func(weight, bias, -1), liner_classify_func(weight, bias, 1)], color='green')
     plt.scatter(support_vector.T[:, 0], support_vector.T[:, 1], color='green') #lighten up support vector
     plt.xlabel("x1")
     plt.ylabel("y2")
