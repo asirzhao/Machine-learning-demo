@@ -6,16 +6,16 @@ from sklearn import metrics
 
 class BinaryEvaluation:
     """
-	This class provides some methods to evaluate binary classification. All the samples should be in probability format, which is 
-	available to generate PR-curve, ROC-curve and so on.In this class, dataframe is the input data, column label is the labels and
-    colunm result, which is the predicted probability,of samples.
-	See more information about binary evaluation:
-	1.https://en.wikipedia.org/wiki/Precision_and_recall
-	2.https://en.wikipedia.org/wiki/Receiver_operating_characteristic
-	"""
+    This class provides some methods to evaluate binary classification. All the samples should be in probability format,
+    which is available to generate PR-curve, ROC-curve and so on.In this class, dataframe is the input data, column
+    label is the labels and column result, which is the predicted probability,of samples.
+    See more information about binary evaluation:
+    1.https://en.wikipedia.org/wiki/Precision_and_recall
+    2.https://en.wikipedia.org/wiki/Receiver_operating_characteristic
+    """
     def __init__(self):
-        self.file1 = "./data/0710tv.csv"
-        # self.file2 = "./data/0705tv.csv"
+        self.file1 = "./data/data1.csv"
+        # self.file2 = "./data/data2.csv"
 
     def probability_distribution(self, df):
         """
@@ -39,7 +39,6 @@ class BinaryEvaluation:
         ax1.set_xlabel("Probability")
         plt.show()
 
-
     def pr_curve_present(self, df):
         """
         Present the PR-curve of the model
@@ -55,7 +54,6 @@ class BinaryEvaluation:
         plt.xlabel("Recall")
         plt.ylabel("Precision")
         plt.show()
-
 
     def p_r_sep_curve(self, df):
         """
@@ -80,7 +78,6 @@ class BinaryEvaluation:
         plt.grid(True)
         plt.show()
 
-
     def roc_curve(self, df):
         """
         Present the ROC-curve and calculate AUC value
@@ -99,7 +96,6 @@ class BinaryEvaluation:
         plt.ylabel("TPR")
         plt.legend(loc='lower right')
         plt.show()
-
 
     def roc_curve_compare(self, df1, df2):
         """
@@ -136,7 +132,7 @@ if __name__ == '__main__':
     data1 = pd.read_csv(binary_evaluation.file1, encoding="utf-8")
     df1 = data1.loc[:, ['result', 'label']]
     
-	# data2 = pd.read_csv(binary_evaluation.file2, encoding="utf-8")
+    # data2 = pd.read_csv(binary_evaluation.file2, encoding="utf-8")
     # df2 = data2.loc[:, ['result', 'label']]
 
     # evaluation process
