@@ -2,10 +2,10 @@
 Machine learning demo for multiple algorithm
 
 ## Algorithm demo
-Multiple algorithm demos are provided, including python files, test data files and figure files.
+ * Multiple algorithm demos are provided, including python files, test data files and figure files.
 
 ## Evaluation demo
-Some evaluation demos are provided to deal with machine learning evaluation problems.
+ * Some evaluation demos are provided to deal with machine learning evaluation problems.
 
 ## Notes
  * All the demos are reslized by python3, numpy, matplotlib,pandas and sklearn. You may download these tools from the official website, which are pretty popular to deal with machine learning problems, or just install anaconda.
