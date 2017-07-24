@@ -1,5 +1,6 @@
 # Machine-learning-demo
 Machine learning demo for multiple algorithm
+---
 
 ## Algorithm demo
  * Multiple algorithm demos are provided, including python files, test data files and figure files.
