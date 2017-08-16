@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from sklearn.ensemble.gradient_boosting import GradientBoostingClassifier
 from sklearn.linear_model.logistic import LogisticRegression
 from sklearn.preprocessing.data import OneHotEncoder
@@ -18,7 +19,7 @@ class GradientBoostingWithLogisticRegression:
         Gradient Boosting stage
         :return: gbt model and generated new features
         """
-        gbt = GradientBoostingClassifier(n_estimators=200, max_depth=5)
+        gbt = GradientBoostingClassifier(n_estimators=50, max_depth=5)
         gbt.fit(self.x_train, self.y_train)
         return gbt, gbt.apply(self.x_train)[:, :, 0]
 
@@ -33,16 +34,18 @@ class GradientBoostingWithLogisticRegression:
         lr.fit(x_array, y_array)
         return lr
 
-    def feature_assemble(self, x_pre, x_gen):
+    def feature_assemble_train(self, x_gen):
         """
-        Assemble previous and new features, with one-hot encoding
-        :param x_pre: previous x_array
+        Assemble features, with one-hot encoding
         :param x_gen: generated x_array
         :return: assembled features
         """
         enc = OneHotEncoder()
-        x_pre_enc = enc.fit(x_pre)
-        return np.concatenate((x_pre_enc, x_gen), axis=1)
+        x_gen_enc = enc.fit_transform(x_gen)
+        return x_gen_enc
+
+    # def feature_assemble_test(self, x_gen):
+
 
     def roc_curve(self, pro, label):
         """
@@ -67,7 +70,20 @@ class GradientBoostingWithLogisticRegression:
         :return: gbt model and lr model
         """
         gbt, x_gen_train = self.gradient_boosting_stage()
-        x_fin_train = self.feature_assemble(self.x_train, x_gen_train)
+        feature_arr_max = []
+        feature_arr_min = []
+
+        # 保存每个feature的最大和最小value
+        for i in range(x_gen_train.shape[1]):
+            feature_arr_max.append(max(x_gen_train[:, i]))
+            feature_arr_min.append(min(x_gen_train[:, i]))
+            # print(min(x_gen_train[:, i]))
+        # print(x_gen_train[0, :])
+        # tmp = list(x_gen_train[:, 1])
+        # tmp = list(set(tmp))
+        # tmp.sort()
+        # print(tuple(tmp))
+        x_fin_train = self.feature_assemble_train(x_gen_train)
         lr = self.logistic_regression_stage(x_fin_train, self.y_train)
         return gbt, lr
 
@@ -79,17 +95,20 @@ class GradientBoostingWithLogisticRegression:
         :return: ROC curve and AUC value
         """
         x_gen_test = gbt.apply(self.x_test)[:, :, 0]
-        x_fin_test = self.feature_assemble(self.x_test, x_gen_test)
+        """"
+        TODO:
+        """
+        # x_fin_test = self.feature_assemble(x_gen_test)
         pro = lr.predict_proba(x_fin_test)
         self.roc_curve(pro, self.y_test)
         return
 
 
 if __name__ == '__main__':
-    file_train = ""
-    file_test = ""
-    train = np.genfromtxt(file_train, delimiter=',')
-    test = np.genfromtxt(file_test, delimiter=',')
-    grad_with_log = GradientBoostingWithLogisticRegression(train[:, 1:-1], train[:, -1], test[:, 1:-1], test[:, -1])
+    file_train = "./data/gbt_train.csv"
+    file_test = "./data/gbt_test.csv"
+    train = pd.read_csv(file_train, encoding="utf-8")
+    test = pd.read_csv(file_test, encoding="utf-8")
+    grad_with_log = GradientBoostingWithLogisticRegression(train.iloc[:, 2:-9], train.iloc[:, -2], test.iloc[:, 2:-9], test.iloc[:, -2])
     gbt, lr = grad_with_log.train_stage()
-    grad_with_log.test_stage(gbt, lr)
+    # grad_with_log.test_stage(gbt, lr)
