@@ -8,6 +8,12 @@ from matplotlib import pyplot as plt
 
 
 class GradientBoostingWithLogisticRegression:
+    """
+    This class reproduces the paper of Facebook which combine gbdt and logistic regression to solve CRT problem.
+    See more details:
+    1.He X, Pan J, Jin O, et al. Practical lessons from predicting clicks on ads at facebook[C].
+        Proceedings of 20th ACM SIGKDD Conference on Knowledge Discovery and Data Mining. ACM, 2014: 1-9.
+    """
     def __init__(self, x_train, y_train, x_test, y_test):
         self.x_train = x_train
         self.y_train = y_train
@@ -40,12 +46,9 @@ class GradientBoostingWithLogisticRegression:
         :param x_gen: generated x_array
         :return: assembled features
         """
-        enc = OneHotEncoder()
-        x_gen_enc = enc.fit_transform(x_gen)
-        return x_gen_enc
-
-    # def feature_assemble_test(self, x_gen):
-
+        enc = OneHotEncoder().fit(x_gen)
+        x_gen_enc = enc.transform(x_gen)
+        return x_gen_enc, enc
 
     def roc_curve(self, pro, label):
         """
@@ -67,48 +70,24 @@ class GradientBoostingWithLogisticRegression:
     def train_stage(self):
         """
         Train stage
-        :return: gbt model and lr model
+        :return: gbt model, lr model and one-hot encoder model
         """
         gbt, x_gen_train = self.gradient_boosting_stage()
-        feature_arr_max = []
-        feature_arr_min = []
-
-        # 保存每个feature的最大和最小value
-        for i in range(x_gen_train.shape[1]):
-            feature_arr_max.append(max(x_gen_train[:, i]))
-            feature_arr_min.append(min(x_gen_train[:, i]))
-            # print(min(x_gen_train[:, i]))
-        # print(x_gen_train[0, :])
-        # tmp = list(x_gen_train[:, 1])
-        # tmp = list(set(tmp))
-        # tmp.sort()
-        # print(tuple(tmp))
-        x_fin_train = self.feature_assemble_train(x_gen_train)
+        x_fin_train, enc = self.feature_assemble_train(x_gen_train)
         lr = self.logistic_regression_stage(x_fin_train, self.y_train)
-        return gbt, lr
+        return gbt, lr, enc
 
-    def test_stage(self, gbt, lr):
+    def test_stage(self, gbt, lr, enc):
         """
         Test stage
         :param gbt: gbt model
         :param lr: lr model
+        :param enc: one-hot encoder model
         :return: ROC curve and AUC value
         """
         x_gen_test = gbt.apply(self.x_test)[:, :, 0]
-        """"
-        TODO:
-        """
-        # x_fin_test = self.feature_assemble(x_gen_test)
+        x_fin_test = enc.transform(x_gen_test)
         pro = lr.predict_proba(x_fin_test)
-        self.roc_curve(pro, self.y_test)
+        self.roc_curve(pro[:, 1], self.y_test)
         return
 
-
-if __name__ == '__main__':
-    file_train = "./data/gbt_train.csv"
-    file_test = "./data/gbt_test.csv"
-    train = pd.read_csv(file_train, encoding="utf-8")
-    test = pd.read_csv(file_test, encoding="utf-8")
-    grad_with_log = GradientBoostingWithLogisticRegression(train.iloc[:, 2:-9], train.iloc[:, -2], test.iloc[:, 2:-9], test.iloc[:, -2])
-    gbt, lr = grad_with_log.train_stage()
-    # grad_with_log.test_stage(gbt, lr)
