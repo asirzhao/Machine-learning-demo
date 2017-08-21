@@ -58,7 +58,7 @@ class GradientBoostingWithLogisticRegression:
         fpr, tpr, threshold = metrics.roc_curve(y_true=label, y_score=pro, pos_label=1)
         auc = metrics.auc(fpr, tpr)
         plt.plot([0, 1], [0, 1], 'k--', alpha=0.5)
-        plt.plot(fpr, tpr, color='r', label="AUC = " + str(auc))
+        plt.plot(fpr, tpr, color='r', label="AUC = " + str('%.3f'% auc))
         plt.title("ROC-curve")
         plt.grid(True)
         plt.xlabel("FPR")

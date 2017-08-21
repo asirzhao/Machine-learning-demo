@@ -89,7 +89,7 @@ class BinaryEvaluation:
         fpr, tpr, threshold = metrics.roc_curve(y_true=label, y_score=probability, pos_label=1)
         auc = metrics.auc(fpr, tpr)
         plt.plot([0, 1], [0, 1], 'k--', alpha=0.5)
-        plt.plot(fpr, tpr, color='r', label="AUC = "+str(auc))
+        plt.plot(fpr, tpr, color='r', label="AUC = "+str('%.3f'% auc))
         plt.title("ROC-curve")
         plt.grid(True)
         plt.xlabel("FPR")
@@ -108,13 +108,13 @@ class BinaryEvaluation:
         probability_1 = df1['result']
         fpr_1, tpr_1, threshold_1 = metrics.roc_curve(y_true=label_1, y_score=probability_1, pos_label=1)
         auc_1 = metrics.auc(fpr_1, tpr_1)
-        plt.plot(fpr_1, tpr_1, color='r', label="model 1, AUC = "+str(auc_1))
+        plt.plot(fpr_1, tpr_1, color='r', label="model 1, AUC = "+str('%.3f'% auc_1))
 
         label_2 = df2['label']
         probability_2 = df2['result']
         fpr_2, tpr_2, threshold_2 = metrics.roc_curve(y_true=label_2, y_score=probability_2, pos_label=1)
         auc_2 = metrics.auc(fpr_2, tpr_2)
-        plt.plot(fpr_2, tpr_2, color='b', label="model 2, AUC = "+str(auc_2))
+        plt.plot(fpr_2, tpr_2, color='b', label="model 2, AUC = "+str('%.3f'% auc_2))
 
         plt.plot([0, 1], [0, 1], 'k--', alpha=0.5)
         plt.title("ROC-curve")
