@@ -13,6 +13,7 @@ class GradientBoostingWithLogisticRegression:
     See more details:
     1.He X, Pan J, Jin O, et al. Practical lessons from predicting clicks on ads at facebook[C].
         Proceedings of 20th ACM SIGKDD Conference on Knowledge Discovery and Data Mining. ACM, 2014: 1-9.
+    2.My blog: https://asir.unbelievable9.info/2017/08/23/paper-facebook/#more
     """
     def __init__(self, x_train, y_train, x_test, y_test):
         self.x_train = x_train
