@@ -13,7 +13,7 @@ class GradientBoostingWithLogisticRegression:
     See more details:
     1.He X, Pan J, Jin O, et al. Practical lessons from predicting clicks on ads at facebook[C].
         Proceedings of 20th ACM SIGKDD Conference on Knowledge Discovery and Data Mining. ACM, 2014: 1-9.
-    2.My blog: https://asir.unbelievable9.info/2017/08/23/paper-facebook/#more
+    2.My blog: https://joeasir.github.io/2017/08/23/paper-facebook/
     """
     def __init__(self, x_train, y_train, x_test, y_test):
         self.x_train = x_train
@@ -21,7 +21,7 @@ class GradientBoostingWithLogisticRegression:
         self.x_test = x_test
         self.y_test = y_test
 
-    def gradient_boosting_stage(self):
+    def __gradient_boosting_stage(self):
         """
         Gradient Boosting stage
         :return: gbt model and generated new features
@@ -30,7 +30,7 @@ class GradientBoostingWithLogisticRegression:
         gbt.fit(self.x_train, self.y_train)
         return gbt, gbt.apply(self.x_train)[:, :, 0]
 
-    def logistic_regression_stage(self, x_array, y_array):
+    def __logistic_regression_stage(self, x_array, y_array):
         """
         Logistic stage
         :param x_array: input x_array
@@ -41,7 +41,7 @@ class GradientBoostingWithLogisticRegression:
         lr.fit(x_array, y_array)
         return lr
 
-    def feature_assemble_train(self, x_gen):
+    def __feature_assemble_train(self, x_gen):
         """
         Assemble features, with one-hot encoding
         :param x_gen: generated x_array
@@ -53,7 +53,8 @@ class GradientBoostingWithLogisticRegression:
 
     def roc_curve(self, pro, label):
         """
-        present ROC curve and AUC value
+        Public function
+        Present ROC curve and AUC value
         :return: ROC curve and AUC value
         """
         fpr, tpr, threshold = metrics.roc_curve(y_true=label, y_score=pro, pos_label=1)
@@ -70,17 +71,19 @@ class GradientBoostingWithLogisticRegression:
 
     def train_stage(self):
         """
+        Public function
         Train stage
         :return: gbt model, lr model and one-hot encoder model
         """
-        gbt, x_gen_train = self.gradient_boosting_stage()
-        x_fin_train, enc = self.feature_assemble_train(x_gen_train)
-        lr = self.logistic_regression_stage(x_fin_train, self.y_train)
+        gbt, x_gen_train = self.__gradient_boosting_stage()
+        x_fin_train, enc = self.__feature_assemble_train(x_gen_train)
+        lr = self.__logistic_regression_stage(x_fin_train, self.y_train)
         return gbt, lr, enc
 
     def test_stage(self, gbt, lr, enc):
         """
         Test stage
+        Public function
         :param gbt: gbt model
         :param lr: lr model
         :param enc: one-hot encoder model
