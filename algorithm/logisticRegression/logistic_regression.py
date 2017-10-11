@@ -9,7 +9,7 @@ class LogisticRegression:
       presents that Newton's method converge much faster than gradient descent.
         See more information about Newton'method and convex function optimzation:
 	1.https://en.wikipedia.org/wiki/Newton%27s_method
-	2.tps://see.stanford.edu/materials/lsocoee364a/03ConvexFunctions.pdf
+	2.https://see.stanford.edu/materials/lsocoee364a/03ConvexFunctions.pdf
     """
     def __init__(self, feature_train, label_train, grad_type='GD', alpha=0.001, alpha_rate=1, batch_size=10, iterator_num=100000):
         """
@@ -80,7 +80,7 @@ class LogisticRegression:
 
     def __mini_batch_gradient_descent(self, theta, x_array, y_array, alpha, batch):
         """
-        Batch gradient descent
+        Mini-batch gradient descent
         :param theta: previous theta value
         :param x_array: feature arrays
         :param y_array: label arrays
